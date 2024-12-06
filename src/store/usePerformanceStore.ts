@@ -21,7 +21,7 @@ interface PerformanceState {
   savings: AuditSavings | null;
   isLoading: boolean;
   error: string | null;
-  analyze: (url: string) => Promise<void>;
+  analyze: (url: string, strategy: 'desktop' | 'mobile') => Promise<void>;
 }
 
 export const usePerformanceStore = create<PerformanceState>((set) => ({
@@ -30,10 +30,10 @@ export const usePerformanceStore = create<PerformanceState>((set) => ({
   savings: null,
   isLoading: false,
   error: null,
-  analyze: async (url: string) => {
+  analyze: async (url: string, strategy: 'desktop' | 'mobile') => {
     try {
       set({ isLoading: true, error: null });
-      const data = await fetchPageSpeedInsights(url);
+      const data = await fetchPageSpeedInsights(url, strategy);
       const { metrics, audits, adminPanelSavings, manualInterventionSavings, totalSavings } = parseEnhancedPageSpeedResults(data);
       
       set({

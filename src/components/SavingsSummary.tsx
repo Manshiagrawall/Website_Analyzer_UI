@@ -29,7 +29,7 @@ export function SavingsSummary() {
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+    <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
       <h3 className="text-lg font-semibold text-gray-900">Potential Time Savings</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {cards.map((card) => {

@@ -7,75 +7,40 @@ const PRIORITY_MAPPING = {
   TBT: 'Low',
 };
 
-// const ADDRESSABLE_ISSUES = {
-//   'modern-image-formats': {
-//     description: 'The use of outdated image formats can result in large file sizes and slow page loading times.',
-//     impact: 'Using modern image formats like WebP or AVIF can significantly reduce image file sizes and improve loading times, especially on mobile networks.',
-//     solutions: [
-//       'Convert images to modern formats (WebP/AVIF): Use tools like ImageMagick, Adobe Photoshop, or online converters to convert images.',
-//       'Update codebase references: Replace existing image references in HTML, CSS, or JS with WebP/AVIF URLs.',
-//       'Serve conditionally: Use server-side logic to serve modern formats to supported browsers, with fallbacks for others.',
-//       'Automate conversion: Integrate libraries like Sharp for automated conversion during uploads or CMS extensions.',
-//     ],
-//   },
-//   'unminified-javascript': {
-//     description: 'Unminified JavaScript files contain unnecessary characters that increase file size and slow down page load times.',
-//     impact: 'Minifying JavaScript can significantly reduce the file size, leading to faster load times and better performance, especially on slower networks.',
-//     solutions: [
-//       'Remove unnecessary characters like whitespaces, comments, and line breaks to reduce file size.',
-//       'Minify JavaScript: Use tools such as Terser, UglifyJS, or integrated build processes like Webpack.',
-//       'Verify functionality: Test thoroughly to ensure minified code functions correctly in all environments.',
-//       'Enable CMS/Server options: Configure CMS or hosting settings to enable automatic JavaScript minification.',
-//     ],
-//   },
-//   'render-blocking-resources': {
-//     description: 'Render-blocking resources delay the initial rendering of a page, increasing the time it takes for users to see content.',
-//     impact: 'Reducing render-blocking resources can speed up the page load and improve the user experience by showing content faster.',
-//     solutions: [
-//       'Optimize loading order: Defer or asynchronously load non-critical scripts to prioritize essential content rendering.',
-//       'Inline critical CSS: Include critical styles inline to reduce render-blocking resources.',
-//       'Use preload or prefetch: Preload key assets for faster loading and prefetch less critical resources for smoother performance.',
-//       'Implement lazy loading: Delay loading of off-screen resources until needed.',
-//     ],
-//   },
-// };
 const ADDRESSABLE_ISSUES = {
-  'modern-image-formats': {
-    description: 'The use of outdated image formats like JPEG or PNG can result in large file sizes, which negatively affect the loading time of a page. Older image formats are not optimized for modern web performance and do not take advantage of newer compression techniques.',
-    impact: 'Switching to modern image formats such as WebP or AVIF can significantly reduce the file size of images. This reduction in size helps the page load faster, especially on mobile devices or slow network connections. Images often make up a large percentage of the total page size, so optimizing them can result in substantial improvements in performance, leading to faster load times, lower data usage for users, and a better user experience overall.',
-    solutions: [
-      'Convert images to modern formats (WebP/AVIF): Use tools like ImageMagick, Adobe Photoshop, or online converters to convert images.',
-      'Update codebase references: Replace existing image references in HTML, CSS, or JS with WebP/AVIF URLs.',
-      'Automate conversion: Integrate libraries like Sharp for automated conversion during uploads or CMS extensions.',
-      'In Magento Admin Panel: Go to Stores > Configuration > Web > Default Pages. Enable the "WebP Images" option if your store supports WebP. If not, use third-party extensions to implement WebP support and automate conversion.',
-      'Ensure proper caching: Go to System > Cache Management and refresh cache after image optimization to ensure the new formats are recognized.'
-    ],
-  },
-  'unminified-javascript': {
-    description: 'Unminified JavaScript files contain unnecessary characters like whitespace, line breaks, and comments, which increase the file size. These characters are not required for execution but are used to make the code human-readable. As a result, the larger file sizes can lead to slower download times and increased latency in page rendering.',
-    impact: 'Minifying JavaScript reduces the size of JavaScript files by removing these unnecessary characters. This reduction in file size can dramatically improve load times, especially on mobile networks where bandwidth is limited. Smaller files also reduce the time it takes for the browser to parse and execute the JavaScript, speeding up the overall page load and improving the user experience. Additionally, minified files are harder to reverse-engineer, providing a small security benefit.',
-    solutions: [
-      'Minify JavaScript: Use tools such as Terser, UglifyJS, or integrated build processes like Webpack.',
-      'Ensure functionality: Test thoroughly to ensure minified code functions correctly in all environments.',
-      'In Magento Admin Panel: Go to Stores > Configuration > Developer > JavaScript Settings. Enable the "Merge JavaScript Files" option to merge and minify JavaScript files automatically.',
-      'For more advanced optimization: Use third-party performance extensions in Magento (e.g., Full Page Cache Warmer or Page Speed Optimizer) to further minify and merge assets.'
-    ],
-  },
-  'render-blocking-resources': {
-    description: 'Render-blocking resources are files (like JavaScript and CSS) that must be fully downloaded and processed before the page can be rendered. These resources can delay the initial paint of the page, meaning the user sees an empty screen or a partially-loaded page for a longer period.',
-    impact: 'Reducing or deferring render-blocking resources can significantly improve the page load time. By deferring or asynchronously loading non-essential resources, the browser can begin rendering the page content sooner, providing users with a faster, more responsive experience. This is especially important for mobile users who may be on slower networks. Faster load times contribute to lower bounce rates and improved user satisfaction.',
-    solutions: [
-      'Optimize loading order: Defer or asynchronously load non-critical scripts to prioritize essential content rendering.',
-      'Inline critical CSS: Include critical styles inline to reduce render-blocking resources. This allows the browser to render the page before external CSS files are fully loaded.',
-      'In Magento Admin Panel: Go to Stores > Configuration > Developer > CSS Settings. Enable the "Merge CSS Files" option to reduce the number of CSS files and reduce blocking.',
-      'Use preload or prefetch: Preload key assets (such as fonts or images) for faster loading and prefetch less critical resources to smooth out performance.',
-      'Ensure all resources are optimized by using a performance extension in Magento (e.g., Magento 2 PageSpeed Optimization extension) to automate these changes.'
-    ],
-  },
-};
-
-
-
+    'modern-image-formats': {
+      description: 'The use of outdated image formats like JPEG or PNG can result in large file sizes, which negatively affect the loading time of a page. Older image formats are not optimized for modern web performance and do not take advantage of newer compression techniques.',
+      impact: 'Switching to modern image formats such as WebP or AVIF can significantly reduce the file size of images. This reduction in size helps the page load faster, especially on mobile devices or slow network connections. Images often make up a large percentage of the total page size, so optimizing them can result in substantial improvements in performance, leading to faster load times, lower data usage for users, and a better user experience overall.',
+      solutions: [
+        'Convert images to modern formats (WebP/AVIF): Use tools like ImageMagick, Adobe Photoshop, or online converters to convert images.',
+        'Update codebase references: Replace existing image references in HTML, CSS, or JS with WebP/AVIF URLs.',
+        'Automate conversion: Integrate libraries like Sharp for automated conversion during uploads or CMS extensions.',
+        'In Magento Admin Panel: Go to Stores > Configuration > Web > Default Pages. Enable the "WebP Images" option if your store supports WebP. If not, use third-party extensions to implement WebP support and automate conversion.',
+        'Ensure proper caching: Go to System > Cache Management and refresh cache after image optimization to ensure the new formats are recognized.'
+      ],
+    },
+    'unminified-javascript': {
+      description: 'Unminified JavaScript files contain unnecessary characters like whitespace, line breaks, and comments, which increase the file size. These characters are not required for execution but are used to make the code human-readable. As a result, the larger file sizes can lead to slower download times and increased latency in page rendering.',
+      impact: 'Minifying JavaScript reduces the size of JavaScript files by removing these unnecessary characters. This reduction in file size can dramatically improve load times, especially on mobile networks where bandwidth is limited. Smaller files also reduce the time it takes for the browser to parse and execute the JavaScript, speeding up the overall page load and improving the user experience. Additionally, minified files are harder to reverse-engineer, providing a small security benefit.',
+      solutions: [
+        'Minify JavaScript: Use tools such as Terser, UglifyJS, or integrated build processes like Webpack.',
+        'Ensure functionality: Test thoroughly to ensure minified code functions correctly in all environments.',
+        'In Magento Admin Panel: Go to Stores > Configuration > Developer > JavaScript Settings. Enable the "Merge JavaScript Files" option to merge and minify JavaScript files automatically.',
+        'For more advanced optimization: Use third-party performance extensions in Magento (e.g., Full Page Cache Warmer or Page Speed Optimizer) to further minify and merge assets.'
+      ],
+    },
+    'render-blocking-resources': {
+      description: 'Render-blocking resources are files (like JavaScript and CSS) that must be fully downloaded and processed before the page can be rendered. These resources can delay the initial paint of the page, meaning the user sees an empty screen or a partially-loaded page for a longer period.',
+      impact: 'Reducing or deferring render-blocking resources can significantly improve the page load time. By deferring or asynchronously loading non-essential resources, the browser can begin rendering the page content sooner, providing users with a faster, more responsive experience. This is especially important for mobile users who may be on slower networks. Faster load times contribute to lower bounce rates and improved user satisfaction.',
+      solutions: [
+        'Optimize loading order: Defer or asynchronously load non-critical scripts to prioritize essential content rendering.',
+        'Inline critical CSS: Include critical styles inline to reduce render-blocking resources. This allows the browser to render the page before external CSS files are fully loaded.',
+        'In Magento Admin Panel: Go to Stores > Configuration > Developer > CSS Settings. Enable the "Merge CSS Files" option to reduce the number of CSS files and reduce blocking.',
+        'Use preload or prefetch: Preload key assets (such as fonts or images) for faster loading and prefetch less critical resources to smooth out performance.',
+        'Ensure all resources are optimized by using a performance extension in Magento (e.g., Magento 2 PageSpeed Optimization extension) to automate these changes.'
+      ],
+    },
+  };
 
 export function parseEnhancedPageSpeedResults(data: any) {
   const { lighthouseResult } = data;
@@ -93,6 +58,7 @@ export function parseEnhancedPageSpeedResults(data: any) {
 
   const metrics = metricsToExtract.map(({ id, label, icon }) => {
     const audit = audits[id];
+    console.log(audit);
     return {
       id,
       label,
@@ -132,8 +98,8 @@ export function parseEnhancedPageSpeedResults(data: any) {
       results.push({
         id: auditId,
         title,
-        description: issue.description,  // Added description from issue mapping
-        impact: issue.impact,  // Added impact from issue mapping
+        description: issue.description,
+        impact: issue.impact,
         priority,
         score: auditDetails.score,
         savings: totalMetricSavings,
@@ -145,8 +111,8 @@ export function parseEnhancedPageSpeedResults(data: any) {
       results.push({
         id: auditId,
         title,
-        description: auditDetails.description,  // Default description from audit details
-        impact: auditDetails.impact || 'No specific impact provided.',  // Default impact if not available
+        description: auditDetails.description,
+        impact: auditDetails.impact || 'No specific impact provided.',
         priority,
         score: auditDetails.score,
         savings: totalMetricSavings,

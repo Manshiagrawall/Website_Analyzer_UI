@@ -3,13 +3,13 @@ import axios from 'axios';
 const API_KEY = import.meta.env.VITE_PAGESPEED_API_KEY;
 const BASE_URL = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
 
-export async function fetchPageSpeedInsights(url: string) {
+export async function fetchPageSpeedInsights(url: string, strategy: 'desktop' | 'mobile') {
   try {
     const response = await axios.get(BASE_URL, {
       params: {
         url,
         key: API_KEY,
-        strategy: 'desktop'
+        strategy
       }
     });
     return response.data;

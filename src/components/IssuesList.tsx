@@ -1,44 +1,13 @@
-// import React from 'react';
-// import { IssueCard } from './IssueCard';
-// import { magentoIssues } from '../data/magentoIssues';
-
-// export function IssuesList() {
-//   const [filter, setFilter] = React.useState<'all' | 'technical' | 'business'>('all');
-
-//   const filteredIssues = magentoIssues.filter(issue => 
-//     filter === 'all' ? true : issue.category === filter
-//   );
-
-//   return (
-//     <div className="space-y-6">
-//       <div className="flex gap-2">
-//         {(['all', 'technical', 'business'] as const).map((category) => (
-//           <button
-//             key={category}
-//             onClick={() => setFilter(category)}
-//             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-//               filter === category
-//                 ? 'bg-indigo-100 text-indigo-700'
-//                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-//             }`}
-//           >
-//             {category.charAt(0).toUpperCase() + category.slice(1)}
-//           </button>
-//         ))}
-//       </div>
-      
-//       <div className="space-y-4">
-//         {filteredIssues.map((issue) => (
-//           <IssueCard key={issue.id} issue={issue} />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
 import React from 'react';
 import { usePerformanceStore } from '../store/usePerformanceStore';
-import { Code, ArrowRight, AlertCircle } from 'lucide-react';
+import { performanceIssues } from '../data/performanceIssues';
+import { ArrowRight } from 'lucide-react';
+
+// Define CSS styles for highlighting
+const highlightStyle = {
+  fontWeight: 'bold',
+  color: 'green', // Change this color as needed
+};
 
 export function IssuesList() {
   const { audits } = usePerformanceStore();
@@ -53,31 +22,82 @@ export function IssuesList() {
 
   const addressableIssues = audits.filter(audit => audit.isAddressable);
   const otherIssues = audits.filter(audit => !audit.isAddressable);
+  const sortedOtherIssues = otherIssues.sort((a, b) => (b.savings || 0) - (a.savings || 0));
 
   return (
     <div className="space-y-8">
       {addressableIssues.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Quick Fixes Available</h3>
-          {addressableIssues.map((issue) => (
-            <div key={issue.id} className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h4 className="font-medium text-green-900">{issue.title}</h4>
-              <p className="mt-1 text-sm text-green-700">{issue.description}</p>
+          <h3 className="text-2xl font-bold text-black border-b-2 border-black pb-2">
+            Quick Fixes Available
+          </h3>
+          {addressableIssues.map((issue) => {
+            const solutions = issue.solutions || [];
+            return (
+              <div key={issue.id} className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-lg">
+                <h4 className="font-bold text-black">{issue.title}</h4>
+                <p className="mt-1 text-sm font-semibold text-green-700">
+                  {issue.description}
+                </p>
+                {issue.savings > 0 && (
+                  <p className="mt-2 text-sm font-bold text-gray-500">
+                    Potential savings: {(issue.savings / 1000).toFixed(2)}s
+                  </p>
+                )}
+                {solutions.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <h5 className="text-sm font-bold text-green-900">Solution Steps:</h5>
+                    <ul className="space-y-1">
+                      {solutions.map((solution, index) => (
+                        <li key={index} className="flex gap-2 p-2 bg-teal-50 rounded-md hover:bg-teal-100 transition duration-200 text-sm">
+                          <ArrowRight className="w-4 h-4 flex-shrink-0" />
+                          <span>{solution}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+      
+      {sortedOtherIssues.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-2xl font-bold text-black border-b-2 border-black pb-2">
+            Other Performance Issues
+          </h3>
+          {sortedOtherIssues.map((issue) => (
+            <div key={issue.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-md">
+              <h4 className="font-bold text-black">{issue.title}</h4>
               {issue.savings > 0 && (
-                <p className="mt-2 text-sm text-green-600">
+                <p className="mt-2 text-sm font-bold text-gray-500">
                   Potential savings: {(issue.savings / 1000).toFixed(2)}s
                 </p>
               )}
-              {issue.solutions && (
-                <div className="mt-4 space-y-2">
-                  <h5 className="text-sm font-medium text-green-900">Solution Steps:</h5>
+              {performanceIssues[issue.id] && (
+                <div className="mt-4">
+                  <h5 className="text-sm font-bold text-gray-900">Questions for Optimization:</h5>
                   <ul className="space-y-2">
-                    {issue.solutions.map((solution, index) => (
-                      <li key={index} className="flex gap-2 text-sm text-green-700">
-                        <ArrowRight className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                        <span>{solution}</span>
-                      </li>
-                    ))}
+                    {performanceIssues[issue.id].questions.map((question, index) => {
+                      // Highlighting only the first query's work time
+                      const parts = question.split(':');
+                      return (
+                        <li key={index} className="text-sm font-semibold text-gray-700 bg-gray-100 p-1 rounded-md hover:bg-gray-200 transition duration-200">
+                          {/* Highlighting only the first part */}
+                          {index === 0 ? (
+                            <>
+                              <span style={highlightStyle}>{parts[0]}:</span> {parts[1]}
+                            </>
+                          ) : (
+                            <>
+                              {parts[0]}: {parts[1]}
+                            </>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
@@ -85,26 +105,6 @@ export function IssuesList() {
           ))}
         </div>
       )}
-
-      {/* {otherIssues.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Other Performance Issues</h3>
-          {otherIssues.map((issue) => (
-            <div key={issue.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900">{issue.title}</h4>
-              <p className="mt-1 text-sm text-gray-600">{issue.description}</p>
-              {issue.savings > 0 && (
-                <p className="mt-2 text-sm text-gray-500">
-                  Potential savings: {(issue.savings / 1000).toFixed(2)}s
-                </p>
-              )}
-              {issue.generatedQuestion && (
-                <p className="mt-4 text-sm text-gray-600 italic">{issue.generatedQuestion}</p>
-              )}
-            </div>
-          ))}
-        </div>
-      )} */}
     </div>
   );
 }

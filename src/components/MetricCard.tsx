@@ -1,111 +1,15 @@
 import React, { useState } from 'react';
+import { Info, Clock, Gauge, Maximize, Move, Zap } from 'lucide-react';
 import { PerformanceMetric } from '../types/performance';
-import { Zap, Maximize, Clock, Move, MousePointer, Gauge, Info } from 'lucide-react';
 
-interface MetricCardProps {
-  metric: PerformanceMetric;
-}
-
-const iconMapping: Record<string, React.FC<any>> = {
-  Zap,
-  Maximize,
-  Clock,
-  Move,
-  MousePointer,
-  Gauge,
+const iconMapping = {
+  'first-contentful-paint': Zap,
+  'largest-contentful-paint': Maximize,
+  'total-blocking-time': Clock,
+  'cumulative-layout-shift': Move,
+  'speed-index': Gauge,
+  'interactive': Move, // Adjust as necessary
 };
-
-// const explanationDataMapping: Record<string, { whatItMeans: string; howToImprove: string[]; impact: string; technicalDetails: string; thresholds?: string }> = {
-//   'first-contentful-paint': {
-//     whatItMeans: 'First Contentful Paint (FCP) measures the time it takes for the first piece of content to be rendered on the screen.',
-//     howToImprove: [
-//       'Optimize server response times.',
-//       'Reduce render-blocking resources.',
-//       'Use a content delivery network (CDN).',
-//     ],
-//     impact: 'A faster FCP improves user perception of your site’s speed.',
-//     technicalDetails: 'FCP is measured from the time the user requests the page until the browser renders the first pixel of content.',
-//     thresholds: `
-//       <div class="flex items-center">
-//         <span class="text-green-500">Good (≤ 1.8 s)</span>
-//         <span class="text-yellow-500 mx-2">Needs Improvement (1.8 s - 3 s)</span>
-//         <span class="text-red-500">Poor (> 3 s)</span>
-//       </div>
-//     `,
-//   },
-//   'largest-contentful-paint': {
-//     whatItMeans: 'Largest Contentful Paint (LCP) measures the time it takes for the largest content element to be rendered.',
-//     howToImprove: [
-//       'Optimize images and videos.',
-//       'Minimize CSS and JavaScript blocking.',
-//       'Use lazy loading for offscreen images.',
-//     ],
-//     impact: 'Improving LCP can lead to a better user experience and lower bounce rates.',
-//     technicalDetails: 'LCP is measured from the time the user requests the page until the largest content element is rendered.',
-//     thresholds: `
-//       <div class="flex items-center">
-//         <span class="text-green-500">Good (≤ 2.3 s)</span>
-//         <span class="text-yellow-500 mx-2">Needs Improvement (2.3 s - 4 s)</span>
-//         <span class="text-red-500">Poor (> 4 s)</span>
-//       </div>
-//     `,
-//   },
-//   'cumulative-layout-shift': {
-//     whatItMeans: 'Cumulative Layout Shift (CLS) measures the visual stability of a page by quantifying how much the content shifts during loading.',
-//     howToImprove: [
-//       'Include size attributes for images and videos.',
-//       'Avoid inserting content above existing content.',
-//       'Use CSS transform animations instead of layout animations.',
-//     ],
-//     impact: 'A lower CLS score leads to a more stable and pleasant user experience.',
-//     technicalDetails: 'CLS is calculated by summing the layout shift scores for every unexpected layout shift during the entire lifespan of the page.',
-//     thresholds: `
-//       <div class="flex items-center">
-//         <span class="text-green-500">Good (≤ 0.1)</span>
-//         <span class="text-yellow-500 mx-2">Needs Improvement (0.1 - 0.25)</span>
-//         <span class="text-red-500">Poor (> 0.25)</span>
-//       </div>
-//     `,
-//   },
-//   'total-blocking-time': {
-//     whatItMeans: 'Total Blocking Time (TBT) measures the time between FCP and Time to Interactive (TTI) when the main thread is blocked long enough to prevent input responsiveness.',
-//     howToImprove: [
-//       'Minimize long tasks in JavaScript.',
-//       'Use web workers for heavy computations.',
-//       'Optimize third-party scripts.',
-//     ],
-//     impact: 'Reducing TBT can lead to a more responsive user experience.',
-//     technicalDetails: 'TBT is calculated by summing the blocking time of all long tasks that occur between FCP and TTI.',
-//     thresholds: `
-//       <div class="flex items-center">
-//         <span class="text-green-500">Good (≤ 200 ms)</span>
-//         <span class="text-yellow-500 mx-2">Needs Improvement (200 ms - 500 ms)</span>
-//         <span class="text-red-500">Poor (> 500 ms)</span>
-//       </div>
-//     `,
-//   },
-//   'speed-index': {
-//     whatItMeans: 'Speed Index measures how quickly the contents of a page are visibly populated.',
-//     howToImprove: [
-//       'Optimize critical rendering path.',
-//       'Minimize CSS and JavaScript blocking.',
-//       'Use lazy loading for images.',
-//     ],
-//     impact: 'A lower Speed Index indicates a faster perceived load time.',
-//     technicalDetails: 'Speed Index is calculated by analyzing the visual progress of a page load.',
-//   },
-//   'interactive': {
-//     whatItMeans: 'Time to Interactive (TTI) measures how long it takes for a page to become fully interactive.',
-//     howToImprove: [
-//       'Reduce JavaScript execution time.',
-//       'Optimize resource loading.',
-//       'Minimize main thread work.',
-//     ],
-//     impact: 'A faster TTI improves user engagement and satisfaction.',
-//     technicalDetails: 'TTI is measured from the time the user requests the page until the page is fully interactive.',
-//   },
-//   // Add more metrics as needed
-// };
 
 const explanationDataMapping: Record<string, { whatItMeans: string; howToImprove: string[]; impact: string; technicalDetails: string; thresholds?: string }> = {
   'first-contentful-paint': {
@@ -196,8 +100,11 @@ const explanationDataMapping: Record<string, { whatItMeans: string; howToImprove
     impact: 'A faster TTI improves user engagement and satisfaction.',
     technicalDetails: 'TTI is measured from the time the user requests the page until the page is fully interactive.',
   },
-  // Add more metrics as needed
 };
+
+interface MetricCardProps {
+  metric: PerformanceMetric;
+}
 
 export function MetricCard({ metric }: MetricCardProps) {
   const [showExplanation, setShowExplanation] = useState(false);

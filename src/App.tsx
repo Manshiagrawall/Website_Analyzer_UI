@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { URLInput } from './components/URLInput';
 import { PerformanceScore } from './components/PerformanceScore';
@@ -8,6 +8,12 @@ import { OptimizationChecklist } from './components/OptimizationChecklist';
 import { SavingsSummary } from './components/SavingsSummary';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  const handleToggle = () => {
+    setIsMobile(prev => !prev);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -18,7 +24,21 @@ function App() {
             Get detailed insights into your website's performance and discover actionable improvements to enhance user experience.
           </p>
         </div>
-        <URLInput />
+        <div className="flex justify-center mb-4">
+          <button 
+            onClick={handleToggle} 
+            className={`px-4 py-2 rounded ${isMobile ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+          >
+            Mobile
+          </button>
+          <button 
+            onClick={handleToggle} 
+            className={`px-4 py-2 rounded ${!isMobile ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+          >
+            Desktop
+          </button>
+        </div>
+        <URLInput isMobile={isMobile} />
         <div className="mt-12 space-y-6">
           <PerformanceScore />
           <SavingsSummary />

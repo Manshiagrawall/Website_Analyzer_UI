@@ -44,9 +44,7 @@ function App() {
           <SavingsSummary />
         </div>
         <div className="space-y-6">
-          <ExpandablePanel title="Known Issues">
             <IssuesList />
-          </ExpandablePanel>
           <ExpandablePanel title="Optimization Checklist">
             <OptimizationChecklist />
           </ExpandablePanel>
